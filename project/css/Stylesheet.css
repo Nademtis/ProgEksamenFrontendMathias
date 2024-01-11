@@ -1,5 +1,38 @@
-.box{
+.box {
     background-color: lightblue;
     width: 500px;
     height: 400px;
+}
+
+.hotelOverview {
+    background-color: lightblue;
+    width: 65%;
+    /*height: 400px;*/
+}
+.hotelEditing{
+    width: 300px;
+}
+.updateHotelDiv{
+    background-color: #6f9aa1;
+    /*width: 400px;*/
+    height: 450px;
+}
+.addRoomDiv{
+    background-color: #6f9aa1;
+    height: 450px;
+    justify-content: space-evenly;
+}
+
+.tableData {
+    /* Your default styles for .tableData */
+    background-color: #f0f0f0; /* Default color for even rows */
+}
+
+.tableData:nth-child(odd) {
+    background-color: #e0e0e0; /* Color for odd rows */
+}
+
+.tableData:hover {
+    background-color: #6c8888; /* Darker color on hover */
+    cursor: pointer;
 }
