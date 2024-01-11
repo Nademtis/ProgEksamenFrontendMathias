@@ -2,6 +2,9 @@ const addNewHotelURL = "http://localhost:3333/addNewHotel";
 const getAllHotelsURL = "http://localhost:3333/getAllHotels";
 const updateHotelURL = "http://localhost:3333/updateHotel";
 const deleteHotelURL = "http://localhost:3333/deleteHotel/";
+const addNewGuestURL = "http://localhost:3333/addNewGuest";
+const addNewRoomURL = "http://localhost:3333/addNewRoom";
+
 
 let allHotels = {}
 
@@ -42,7 +45,35 @@ function addNewHotel() {
 
 }
 
-function updateHotel(){
+function addNewRoom(){
+    event.preventDefault();
+    let hotelID = document.getElementById("hotelID").value;
+    let price = document.getElementById("roomPrice").value;
+    let amountOfBeds = document.getElementById("numberOfBeds").value;
+
+    console.log("fetch looks like: " + addNewRoomURL + "/" + price + "/" + amountOfBeds + "/" + hotelID)
+    fetch(addNewRoomURL + "/" + price + "/" + amountOfBeds + "/" + hotelID, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error adding room");
+            }
+        })
+        .then(data => {
+            console.log("Room was added successfully");
+            alert("Room was added successfully")
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error adding room:', error);
+        });
+}
+
+function updateHotel() {
     event.preventDefault();
     let idToChange = document.getElementById("idToChange")
     let nameToChange = document.getElementById("nameToChange")
@@ -80,7 +111,41 @@ function updateHotel(){
     })
 }
 
+function addNewGuest() {
+    event.preventDefault();
 
+    let username = document.getElementById("username")
+    let firstName = document.getElementById("firstName")
+    let lastName = document.getElementById("lastName")
+    let email = document.getElementById("email")
+    let phoneNumber = document.getElementById("phoneNumber")
+
+    let guest = {
+        username: username.value,
+        firstName: firstName.value,
+        lastName: lastName.value,
+        email: email.value,
+        phoneNumber: phoneNumber.value
+    }
+    let body = JSON.stringify(guest)
+    console.log(body)
+
+    fetch(addNewGuestURL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: body
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error("Error in addNewGuest()")
+        }
+        return response.json()
+    }).then(data => {
+        console.log("Guest added" + data)
+        alert("You have signed up successfully")
+    }).catch(error => {
+        console.error("error saving Guest" + error)
+    })
+}
 
 function showHotels() {
     let tableBody = document.getElementById("listAllHotelsTableBody")
@@ -150,7 +215,7 @@ function deleteHotel() {
         });
 }
 
-function fillOutForm(selectedHotel){
+function fillOutForm(selectedHotel) {
     let idToChange = document.getElementById("idToChange")
     let nameToChange = document.getElementById("nameToChange")
     let streetToChange = document.getElementById("streetToChange")

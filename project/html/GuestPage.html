@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/Stylesheet.css">
-    <title>Hotel Overview</title>
+    <title>Guest</title>
 </head>
 <body onload="fetchHotels()">
 
@@ -15,54 +15,38 @@
     <div class="row">
         <div class="col-md-4 hotelEditing ">
             <div class="p-3 updateHotelDiv ">
-                <h3>Lav Hotel Ændringer</h3>
-                <h7>Tryk på listen til højre for at få et udgangspunkt</h7>
-                <form onsubmit="updateHotel()">
+                <h3>Lav Ny Bruger</h3>
+                <form onsubmit="addNewGuest()">
                     <div class="form-group">
-                        <input type="hidden" id="idToChange" class="form-control" placeholder="Name" required>
+                        <input type="text" id="username" class="form-control" placeholder="username" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="nameToChange" class="form-control" placeholder="Name" required>
+                        <input type="text" id="firstName" class="form-control" placeholder="firstname" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="streetToChange" class="form-control" placeholder="Street" required>
+                        <input type="text" id="lastName" class="form-control" placeholder="lastName" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="cityToChange" class="form-control" placeholder="City" required>
+                        <input type="text" id="email" class="form-control" placeholder="email" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="zipToChange" class="form-control" placeholder="Zipcode" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="countryToChange" class="form-control" placeholder="Country" required>
+                        <input type="text" id="phoneNumber" class="form-control" placeholder="phoneNumber" required>
                     </div>
                     <div class="d-flex justify-content-around">
-                        <button class="btn btn-danger" onclick="deleteHotel()"> Fjern Hotel</button>
-                        <button class="btn btn-primary" type="submit"> Opdater Hotel</button>
+                        <button class="btn btn-primary" type="submit"> Opret Ny Bruger</button>
                     </div>
                 </form>
             </div>
-            <div class="p-3 addRoomDiv">
+            <div class="addRoomDiv">
                 <div>
-                    <div>
-                        <h3>Tilføj Rum</h3>
-                        <form onsubmit="addNewRoom()">
-                            <div class="form-group">
-                                <input type="text" id="hotelID" class="form-control" placeholder="hotel ID" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="roomPrice" class="form-control" placeholder="Price of Room"
-                                       required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="numberOfBeds" class="form-control" placeholder="Amount of Beds"
-                                       required>
-                            </div>
-                            <div class="d-flex justify-content-around">
-                                <button class="btn btn-primary" type="submit"> Opret Rum</button>
-                            </div>
-                        </form>
-                    </div>
+                    <h3>Lav booking af rum</h3>
+                    <h5>WIP</h5>
+                </div>
+            </div>
+            <div class="addRoomDiv">
+                <div>
+                    <h3>Aflys reservation</h3>
+                    <h5>WIP</h5>
                 </div>
             </div>
         </div>
