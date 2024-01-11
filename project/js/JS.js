@@ -1,12 +1,14 @@
-const addNewHotelURL = "http://localhost:3333/addNewHotel";
-const getAllHotelsURL = "http://localhost:3333/getAllHotels";
-const updateHotelURL = "http://localhost:3333/updateHotel";
-const deleteHotelURL = "http://localhost:3333/deleteHotel/";
-const addNewGuestURL = "http://localhost:3333/addNewGuest";
-const addNewRoomURL = "http://localhost:3333/addNewRoom";
-
+const addNewHotelURL = "http://localhost:3333/addNewHotel"
+const getAllHotelsURL = "http://localhost:3333/getAllHotels"
+const updateHotelURL = "http://localhost:3333/updateHotel"
+const deleteHotelURL = "http://localhost:3333/deleteHotel/"
+const addNewGuestURL = "http://localhost:3333/addNewGuest"
+const addNewRoomURL = "http://localhost:3333/addNewRoom"
+const addNewReservationURL = "http://localhost:3333/addNewReservation"
+const getRoomsURL = "http://localhost:3333/getRooms/"
 
 let allHotels = {}
+let rooms = {}
 
 function addNewHotel() {
     event.preventDefault();
@@ -45,7 +47,7 @@ function addNewHotel() {
 
 }
 
-function addNewRoom(){
+function addNewRoom() {
     event.preventDefault();
     let hotelID = document.getElementById("hotelID").value;
     let price = document.getElementById("roomPrice").value;
@@ -71,6 +73,38 @@ function addNewRoom(){
         .catch(error => {
             console.error('Error adding room:', error);
         });
+}
+
+function addNewReservation() {
+    event.preventDefault();
+    let username = document.getElementById("usernameForReservation").value;
+    let selectedDate = document.getElementById("selectedDate").value;
+    let roomID = document.getElementById("selectedRoomID").value;
+
+    // console.log("fetch looks like: " + addNewRoomURL + "/" + username + "/" + selectedDate + "/" + roomID)
+    fetch(addNewReservationURL + "/" + username + "/" + selectedDate + "/" + roomID, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error adding reservation");
+            }
+        })
+        .then(data => {
+            console.log("The Reservation was successful");
+            alert("reservation was added successfully")
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error making reservation:', error);
+        });
+}
+
+function cancelReservation(){
+    //TODO
 }
 
 function updateHotel() {
@@ -216,23 +250,49 @@ function deleteHotel() {
 }
 
 function fillOutForm(selectedHotel) {
-    let idToChange = document.getElementById("idToChange")
-    let nameToChange = document.getElementById("nameToChange")
-    let streetToChange = document.getElementById("streetToChange")
-    let cityToChange = document.getElementById("cityToChange")
-    let zipToChange = document.getElementById("zipToChange")
-    let countryToChange = document.getElementById("countryToChange")
+    let onGuestPage = document.getElementById("onGuestPage")
+    if (onGuestPage.value === 0) {
+        let idToChange = document.getElementById("idToChange")
+        let nameToChange = document.getElementById("nameToChange")
+        let streetToChange = document.getElementById("streetToChange")
+        let cityToChange = document.getElementById("cityToChange")
+        let zipToChange = document.getElementById("zipToChange")
+        let countryToChange = document.getElementById("countryToChange")
 
-    idToChange.value = selectedHotel.hotelID
-    nameToChange.value = selectedHotel.name;
-    streetToChange.value = selectedHotel.street;
-    cityToChange.value = selectedHotel.city;
-    zipToChange.value = selectedHotel.zip;
-    countryToChange.value = selectedHotel.country;
+
+        nameToChange.value = selectedHotel.name
+        streetToChange.value = selectedHotel.street
+        cityToChange.value = selectedHotel.city
+        zipToChange.value = selectedHotel.zip
+        countryToChange.value = selectedHotel.country
+        idToChange.value = selectedHotel.hotelID
+
+        let hotelIDtoAddRoom = document.getElementById("hotelID")
+        hotelIDtoAddRoom.value = selectedHotel.hotelID
+    } else {
+        fetchRoomsWithHotelID(selectedHotel.hotelID)
+    }
+}
+
+function fetchRoomsWithHotelID(hotelID) {
+    fetch(getRoomsURL + hotelID)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error in fetchRoomsWithHotelID()");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched rooms:', data);
+            populateRoomDropdown(data)
+        })
+        .catch(error => {
+            console.error("Error fetching rooms:" + error);
+        });
 }
 
 function fetchHotels() {
-    fetch('http://localhost:3333/getAllHotels')
+    fetch(getAllHotelsURL)
         .then(response => {
             if (!response.ok) {
                 throw new Error("Error in fetchHotels()");
@@ -247,4 +307,24 @@ function fetchHotels() {
         .catch(error => {
             console.error('Error fetching hotels:', error);
         });
+}
+
+function populateRoomDropdown(rooms) {
+    let roomDropdownMenu = document.getElementById("roomDropdownMenu")
+
+    roomDropdownMenu.innerHTML = ""
+
+    rooms.forEach(room => {
+        let option = document.createElement("a")
+        option.classList.add("dropdown-item")
+        option.style.cursor = "pointer"
+
+        option.textContent = "RoomID: " + room.room_id + ", Room number: " + room.roomNumber + ", with " + room.numberOfBeds + " beds for: " + room.roomPrice + "kr"
+
+        option.addEventListener("click", function() {
+            document.getElementById("selectedRoomID").value = room.room_id
+        });
+
+        roomDropdownMenu.appendChild(option);
+    });
 }

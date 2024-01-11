@@ -9,17 +9,34 @@
     width: 65%;
     /*height: 400px;*/
 }
-.hotelEditing{
+
+.hotelEditing {
     width: 300px;
 }
-.updateHotelDiv{
+
+.updateHotelDiv {
     background-color: #6f9aa1;
-    /*width: 400px;*/
     height: 450px;
 }
-.addRoomDiv{
+.newUserDiv {
+    background-color: #6f9aa1;
+    height: 400px;
+}
+
+.addRoomDiv {
     background-color: #6f9aa1;
     height: 450px;
+    justify-content: space-evenly;
+}
+.cancelReservationDiv {
+    background-color: #6f9aa1;
+    height: 400px;
+    justify-content: space-evenly;
+}
+
+.addNewReservationDiv {
+    background-color: #6f9aa1;
+    height: 300px;
     justify-content: space-evenly;
 }
 

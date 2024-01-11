@@ -9,12 +9,12 @@
     <title>Guest</title>
 </head>
 <body onload="fetchHotels()">
-
+<input type="hidden" value="1" id="onGuestPage">
 <div class="container">
 
     <div class="row">
         <div class="col-md-4 hotelEditing ">
-            <div class="p-3 updateHotelDiv ">
+            <div class="p-3 newUserDiv">
                 <h3>Lav Ny Bruger</h3>
                 <form onsubmit="addNewGuest()">
                     <div class="form-group">
@@ -37,16 +37,47 @@
                     </div>
                 </form>
             </div>
-            <div class="addRoomDiv">
+            <div class="p-2 addNewReservationDiv">
                 <div>
                     <h3>Lav booking af rum</h3>
-                    <h5>WIP</h5>
+                    <h7>Først vælg et hotel til højre</h7>
+                    <form onsubmit="addNewReservation()">
+                        <div class="form-group">
+                            <input type="text" id="usernameForReservation" class="form-control" placeholder="username" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="selectedRoomID" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="roomDropdown" data-toggle="dropdown">
+                                    Select Room
+                                </button>
+                                <div class="dropdown-menu" id="roomDropdownMenu">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="Date" id="selectedDate" class="form-control" required>
+                        </div>
+
+                        <div class="d-flex justify-content-around">
+                            <button class="btn btn-primary" type="submit"> Book Rum</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="addRoomDiv">
-                <div>
+            <div class="cancelReservationDiv">
+                <div class="p-2">
                     <h3>Aflys reservation</h3>
-                    <h5>WIP</h5>
+                    <form onsubmit="cancelReservation()">
+                        <div class="form-group">
+                            <input type="text" id="usernameForCancelReservation" class="form-control" placeholder="username" required>
+                        </div>
+                        <div class="d-flex justify-content-around">
+                            <button class="btn btn-primary" type="submit"> Find Reservationer</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
