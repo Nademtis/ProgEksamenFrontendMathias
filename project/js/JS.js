@@ -6,6 +6,8 @@ const addNewGuestURL = "http://localhost:3333/addNewGuest"
 const addNewRoomURL = "http://localhost:3333/addNewRoom"
 const addNewReservationURL = "http://localhost:3333/addNewReservation"
 const getRoomsURL = "http://localhost:3333/getRooms/"
+const getReservationsURL = "http://localhost:3333/getReservations/"
+const deleteReservationlURL = "http://localhost:3333/deleteReservation/"
 
 let allHotels = {}
 let rooms = {}
@@ -101,10 +103,6 @@ function addNewReservation() {
         .catch(error => {
             console.error('Error making reservation:', error);
         });
-}
-
-function cancelReservation(){
-    //TODO
 }
 
 function updateHotel() {
@@ -251,7 +249,8 @@ function deleteHotel() {
 
 function fillOutForm(selectedHotel) {
     let onGuestPage = document.getElementById("onGuestPage")
-    if (onGuestPage.value === 0) {
+    console.log(onGuestPage.value)
+    if (onGuestPage.value == 0) {
         let idToChange = document.getElementById("idToChange")
         let nameToChange = document.getElementById("nameToChange")
         let streetToChange = document.getElementById("streetToChange")
@@ -269,7 +268,8 @@ function fillOutForm(selectedHotel) {
 
         let hotelIDtoAddRoom = document.getElementById("hotelID")
         hotelIDtoAddRoom.value = selectedHotel.hotelID
-    } else {
+    }
+    if (onGuestPage.value == 1) {
         fetchRoomsWithHotelID(selectedHotel.hotelID)
     }
 }
@@ -309,6 +309,75 @@ function fetchHotels() {
         });
 }
 
+async function cancelReservationForm() {
+    event.preventDefault()
+    let username = document.getElementById("usernameForCancelReservation")
+    let reservationsList = await fetchReservations(username)
+
+    let reservationTableBody = document.getElementById("ReservationsTableBody")
+    reservationTableBody.innerHTML = ""
+    for (let i = 0; i < reservationsList.length; i++) {
+        let tableRow = document.createElement("tr")
+
+        let dato = document.createElement("td")
+        dato.textContent = reservationsList[i].reservationDate
+        tableRow.appendChild(dato)
+
+        let roomID = document.createElement("td")
+        roomID.textContent = reservationsList[i].room_id
+        tableRow.appendChild(roomID)
+
+        let cancelBtn = document.createElement("td")
+        cancelBtn.textContent = ""
+        cancelBtn.classList.add("btn", "btn-danger")
+        cancelBtn.addEventListener("click", () => removeReservation(reservationsList[i].reservationID));
+        tableRow.appendChild(cancelBtn)
+
+        reservationTableBody.appendChild(tableRow)
+
+    }
+}
+
+function removeReservation(reservationID) {
+    event.preventDefault();
+
+    fetch(deleteReservationlURL + reservationID, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error deleting Reservation");
+            }
+        })
+        .then(data => {
+            console.log("Reservation was deleted successfully");
+            alert("Reservation was deleted successfully")
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error deleting Reservation:', error);
+        });
+
+}
+
+async function fetchReservations(username) {
+    try {
+        const response = await fetch(getReservationsURL + username.value)
+
+        if (!response.ok) {
+            throw new Error("Error in fetchReservations()")
+        }
+
+        const data = await response.json()
+        return data
+    } catch (error) {
+        console.error('Error fetching hotels:', error)
+    }
+}
+
 function populateRoomDropdown(rooms) {
     let roomDropdownMenu = document.getElementById("roomDropdownMenu")
 
@@ -321,7 +390,7 @@ function populateRoomDropdown(rooms) {
 
         option.textContent = "RoomID: " + room.room_id + ", Room number: " + room.roomNumber + ", with " + room.numberOfBeds + " beds for: " + room.roomPrice + "kr"
 
-        option.addEventListener("click", function() {
+        option.addEventListener("click", function () {
             document.getElementById("selectedRoomID").value = room.room_id
         });
 
