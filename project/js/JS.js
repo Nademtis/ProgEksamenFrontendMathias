@@ -10,7 +10,6 @@ const getReservationsURL = "http://localhost:3333/getReservations/"
 const deleteReservationlURL = "http://localhost:3333/deleteReservation/"
 
 let allHotels = {}
-let rooms = {}
 
 function addNewHotel() {
     event.preventDefault();
@@ -43,6 +42,7 @@ function addNewHotel() {
     }).then(data => {
         console.log("Hotel added" + data)
         alert("Hotel was successfully added")
+        window.location.reload();
     }).catch(error => {
         console.error("error saving Hotel" + error)
     })
