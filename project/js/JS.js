@@ -392,8 +392,8 @@ function populateRoomDropdown(rooms) {
 
         option.addEventListener("click", function () {
             document.getElementById("selectedRoomID").value = room.room_id
-        });
+        })
 
-        roomDropdownMenu.appendChild(option);
-    });
+        roomDropdownMenu.appendChild(option)
+    })
 }
